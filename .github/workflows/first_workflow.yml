@@ -1,0 +1,31 @@
+name: draw python picture
+on:
+  push:
+    branches: [ "master" ]
+
+  workflow_dispatch:
+  
+jobs:
+  build:
+    strategy:
+      matrix:
+        py-version: [3.9, 3.10, 3.11]
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Python
+        uses: actions/setup-python@v3.1.4
+        with:
+          python-version: ${{ matrix.py-version }}
+
+      - name: Run Python
+        run: python test.py
+      
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: Picture
+          path: picture.txt
+          retention-days: 1
