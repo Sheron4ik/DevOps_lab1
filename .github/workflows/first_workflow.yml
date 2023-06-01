@@ -13,15 +13,15 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - name: print python version
-        run: python -V
-
       - uses: actions/checkout@v3
 
       - name: Setup Python
         uses: actions/setup-python@v3.1.4
         with:
           python-version: ${{ matrix.py-version }}
+
+      - name: print python version
+        run: python -V
 
       - name: Run Python
         run: python test.py
