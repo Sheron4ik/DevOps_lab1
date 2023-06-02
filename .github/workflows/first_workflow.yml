@@ -41,3 +41,4 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           document: picture_${{ matrix.py-version }}.txt
+          message: "!__CHANGES__!"
