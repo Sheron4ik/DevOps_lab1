@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Setup Python
+      - name: Setup Python versions
         uses: actions/setup-python@v3.1.4
         with:
           python-version: ${{ matrix.py-version }}
@@ -25,7 +25,7 @@ jobs:
       - name: Upgrade pip
         run: python -m pip install --upgrade pip
 
-      - name: Python Black
+      - name: Check Python Black
         uses: cytopia/docker-black@0.11
 
       - name: Run Python
@@ -37,6 +37,8 @@ jobs:
           name: Picture
           path: picture_${{ matrix.py-version }}.txt
           retention-days: 1
+
+
   send_message:
     needs: build_picture
     runs-on: ubuntu-latest
@@ -45,7 +47,7 @@ jobs:
         with:
           name: Picture
 
-      - name: Send tg message
+      - name: Send tg messages
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
