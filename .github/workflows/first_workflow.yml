@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build_picture:
     strategy:
       matrix:
         py-version: ['3.9', '3.10', '3.11']
@@ -34,11 +34,18 @@ jobs:
           name: Picture
           path: picture_${{ matrix.py-version }}.txt
           retention-days: 1
+  send_message:
+    needs: build_picture
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: Picture
 
       - name: Send tg message
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          document: picture_${{ matrix.py-version }}.txt
+          document: picture_*.txt
           message: "!__CHANGES__!"
