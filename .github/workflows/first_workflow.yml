@@ -2,6 +2,8 @@ name: draw python picture
 on:
   push:
     branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
 
   workflow_dispatch:
 
@@ -32,3 +34,10 @@ jobs:
           name: Picture
           path: picture_${{ matrix.py-version }}.txt
           retention-days: 1
+
+      - name: Send tg message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          document: picture_${{ matrix.py-version }}.txt
